@@ -1,0 +1,29 @@
+{
+  "name": "reviews",
+  "version": "1.0.0",
+  "description": "\"Server for handling Atelier API and database\"",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "nodemon server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hr-rfp55-tingle/Reviews.git"
+  },
+  "author": "Cora Durham",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hr-rfp55-tingle/Reviews/issues"
+  },
+  "homepage": "https://github.com/hr-rfp55-tingle/Reviews#readme",
+  "dependencies": {
+    "axios": "^0.21.4",
+    "express": "^4.17.1",
+    "pg": "^8.7.1"
+  },
+  "devDependencies": {
+    "jest": "^27.2.3",
+    "eslint": "^7.32.0"
+  }
+}
