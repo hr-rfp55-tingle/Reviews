@@ -5,7 +5,8 @@
   "main": "server/index.js",
   "scripts": {
     "test": "jest",
-    "start": "nodemon server/index.js"
+    "start": "nodemon server/index.js",
+    "seed": "sudo -u postgres psql < scripts/seed.sql"
   },
   "repository": {
     "type": "git",
