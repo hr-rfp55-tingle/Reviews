@@ -4,8 +4,16 @@ const dbFunc = require('../db/helpers');
 const router = express.Router();
 router.use(express.json());
 
-router.get('/', (req, res) => {
-  res.status(200).send(`This is a request for ${req.query.page} pages. ${req.query.count} results per page, sorted by ${req.query.sort}, for product_id ${req.query.product_id}`);
+router.get('/', async (req, res) => {
+  const product_id = req.query.product_id;
+  const page = req.query.page || 1;
+  const count = req.query.count || 5;
+  let sort = req.query.sort || 'newest';
+  if (sort === 'newest') {
+    sort = 'date';
+  }
+  const results = await dbFunc.getReviews(product_id, page, count, sort );
+  res.status(200).send(results);
 });
 
 router.get('/meta', (req, res) => {
