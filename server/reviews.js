@@ -1,4 +1,5 @@
 const express = require('express');
+const dbFunc = require('../db/helpers');
 
 const router = express.Router();
 router.use(express.json());
@@ -15,11 +16,13 @@ router.post('/', (req, res) => {
   res.status(204).send(`Posted review: ${JSON.stringify(req.body)}`);
 });
 
-router.post('/:review_id/helpful', (req, res) => {
+router.put('/:review_id/helpful', async (req, res) => {
+  await dbFunc.putHelpful(req.params.review_id);
   res.status(204).send(`Marked ${req.params.review_id} as helpful`);
 });
 
-router.post('/:review_id/report', (req, res) => {
+router.put('/:review_id/report', async (req, res) => {
+  await dbFunc.putReport(req.params.review_id);
   res.status(204).send(`Marked ${req.params.review_id} as reported`);
 });
 
