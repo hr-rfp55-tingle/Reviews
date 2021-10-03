@@ -16,11 +16,13 @@ router.get('/', async (req, res) => {
   res.status(200).send(results);
 });
 
-router.get('/meta', (req, res) => {
-  res.status(200).send(`This is a request for review metadata for product ${req.query.product_id}`);
+router.get('/meta', async (req, res) => {
+  const results = await dbFunc.getReviewsMeta(req.query.product_id);
+  res.status(200).send(results);
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+  await dbFunc.postReview(req.body);
   res.status(204).send(`Posted review: ${JSON.stringify(req.body)}`);
 });
 

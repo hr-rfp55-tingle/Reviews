@@ -6,19 +6,62 @@ const getReviews = async (product_id, page, count, sort) => {
   ON reviewsPhotos.review_id = reviews.id
   WHERE reviews.product_id = $1 AND reviews.reported = false
   GROUP BY reviews.id
-  ORDER BY $2 desc
-  LIMIT $3
-  OFFSET $4;`
+  ORDER BY ${sort} DESC
+  LIMIT $2
+  OFFSET $3;`
   try {
-    const res = await db.query(text, [product_id, sort, count, (page - 1) * count]);
+    const res = await db.query(text, [product_id, count, (page - 1) * count]);
     return res.rows;
   } catch (err) {
     console.log(err.stack);
   }
-
 }
 
-const getReviewsMeta = async () => {
+const getReviewsMeta = async (product_id) => {
+  let ratings = `SELECT json_build_array(rating, COUNT(rating)) AS ratings
+  FROM reviews
+  WHERE product_id = $1 AND reported = false
+  GROUP BY rating
+  ORDER BY rating;`;
+  let recommended = `SELECT json_build_array(recommend, COUNT(recommend)) AS recommended
+  FROM reviews
+  WHERE product_id = $1 AND reported = false
+  GROUP BY recommend
+  ORDER BY recommend;`;
+  let characteristics = `SELECT json_build_array(c.name, json_build_object('id', c.id, 'value', AVG(cr.value))) AS characteristics FROM characteristics c
+  INNER JOIN characteristic_review cr
+  ON c.id = cr.characteristic_id
+  AND c.product_id = $1
+  JOIN reviews r
+  ON r.id = cr.review_id
+  AND r.reported = false
+  GROUP BY c.name, c.id
+  ORDER BY c.id;`;
+  try {
+    const resRatings = await db.query(ratings, [product_id]);
+    const resRecommended = await db.query(recommended, [product_id]);
+    const resCharacteristics = await db.query(characteristics, [product_id]);
+    let result = {
+      product_id,
+      'ratings': {},
+      'recommended': {},
+      'characteristics': {}
+    }
+    for (let i = 0; i < resRatings.rows.length; i++) {
+      result.ratings[resRatings.rows[i].ratings[0]] = resRatings.rows[i].ratings[1];
+    }
+    for (let i = 0; i < resRecommended.rows.length; i++) {
+      result.recommended[resRecommended.rows[i].recommended[0]] = resRecommended.rows[i].recommended[1];
+    }
+    for (let i = 0; i < resCharacteristics.rows.length; i++) {
+      console.log(resCharacteristics.rows[i]);
+      result.characteristics[resCharacteristics.rows[i].characteristics[0]] = resCharacteristics.rows[i].characteristics[1];
+    }
+
+    return result;
+  } catch (err) {
+    console.log(err.stack);
+  }
 
 }
 
