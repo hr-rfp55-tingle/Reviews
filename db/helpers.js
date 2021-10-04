@@ -62,30 +62,38 @@ const getReviewsMeta = async (product_id) => {
   } catch (err) {
     console.log(err.stack);
   }
-
 }
 
-const postReview = async () => {
+const postReview = async ({product_id, rating, summary, body, recommend, name, email, photos, characteristics}) => {
+  const text = `INSERT INTO reviews(product_id, rating, summary, body, recommend, reviewer_name, reviewer_email)
+  VALUES ($1, $2, $3, $4, $5, $6, $7);`
+
+  try {
+    const res = await db.query(text, [product_id, rating, summary, body, recommend, name, email]);
+    console.log(res.rows[0]);
+  } catch (err) {
+    console.log(err.stack);
+  }
 
 }
 
 const putHelpful = async (review_id) => {
   const text = 'UPDATE reviews SET helpfulness = helpfulness + 1 WHERE id = $1';
   try {
-    const res = await db.query(text, [review_id])
-    console.log(res.rows[0])
+    const res = await db.query(text, [review_id]);
+    console.log(res.rows[0]);
   } catch (err) {
-    console.log(err.stack)
+    console.log(err.stack);
   }
 }
 
 const putReport = async (review_id) => {
   const text = 'UPDATE reviews SET reported = true WHERE id = $1';
   try {
-    const res = await db.query(text, [review_id])
-    console.log(res.rows[0])
+    const res = await db.query(text, [review_id]);
+    console.log(res.rows[0]);
   } catch (err) {
-    console.log(err.stack)
+    console.log(err.stack);
   }
 }
 
