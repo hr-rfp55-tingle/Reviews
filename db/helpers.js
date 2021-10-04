@@ -54,7 +54,6 @@ const getReviewsMeta = async (product_id) => {
       result.recommended[resRecommended.rows[i].recommended[0]] = resRecommended.rows[i].recommended[1];
     }
     for (let i = 0; i < resCharacteristics.rows.length; i++) {
-      console.log(resCharacteristics.rows[i]);
       result.characteristics[resCharacteristics.rows[i].characteristics[0]] = resCharacteristics.rows[i].characteristics[1];
     }
 
