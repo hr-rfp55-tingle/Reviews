@@ -69,18 +69,15 @@ const postReview = async ({product_id, rating, summary, body, recommend, name, e
 
   try {
     const res = await db.query(text, [product_id, rating, summary, body, recommend, name, email]);
-    console.log('Posted Review');
   } catch (err) {
     console.log(err.stack);
   }
-
 }
 
 const putHelpful = async (review_id) => {
   const text = 'UPDATE reviews SET helpfulness = helpfulness + 1 WHERE id = $1';
   try {
     const res = await db.query(text, [review_id]);
-    console.log('Updated Helpfulness');
   } catch (err) {
     console.log(err.stack);
   }
@@ -90,7 +87,6 @@ const putReport = async (review_id) => {
   const text = 'UPDATE reviews SET reported = true WHERE id = $1';
   try {
     const res = await db.query(text, [review_id]);
-    console.log('Updataed Reported');
   } catch (err) {
     console.log(err.stack);
   }
