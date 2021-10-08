@@ -52,14 +52,14 @@ CREATE TABLE reviewsPhotos (
 GRANT ALL ON reviewsPhotos TO atelier;
 
 COPY products
-FROM '/home/cory/Github/SDC/SDC_App_data/product_id.csv'
+FROM '/docker-entrypoint-initdb.d/SDC_App_data/product_id.csv'
 DELIMITER ',' CSV HEADER;
 
 CREATE INDEX ON products USING hash(id);
 SELECT setval('products_id_seq', max(id)) FROM products;
 
 COPY reviews
-FROM '/home/cory/Github/SDC/SDC_App_data/reviews.csv'
+FROM '/docker-entrypoint-initdb.d/SDC_App_data/reviews.csv'
 DELIMITER ',' CSV HEADER;
 
 CREATE INDEX ON reviews USING hash(id);
@@ -67,7 +67,7 @@ CREATE INDEX ON reviews USING hash(product_id);
 SELECT setval('reviews_id_seq', max(id)) FROM reviews;
 
 COPY characteristics
-FROM '/home/cory/Github/SDC/SDC_App_data/characteristics.csv'
+FROM '/docker-entrypoint-initdb.d/SDC_App_data/characteristics.csv'
 DELIMITER ',' CSV HEADER;
 
 CREATE INDEX ON characteristics USING hash(id);
@@ -75,7 +75,7 @@ CREATE INDEX ON characteristics USING hash(product_id);
 SELECT setval('characteristics_id_seq', max(id)) FROM characteristics;
 
 COPY characteristic_review
-FROM '/home/cory/Github/SDC/SDC_App_data/characteristic_reviews.csv'
+FROM '/docker-entrypoint-initdb.d/SDC_App_data/characteristic_reviews.csv'
 DELIMITER ',' CSV HEADER;
 
 CREATE INDEX ON characteristic_review USING hash(characteristic_id);
@@ -83,7 +83,7 @@ CREATE INDEX ON characteristic_review USING hash(review_id);
 SELECT setval('characteristic_review_id_seq', max(id)) FROM characteristic_review;
 
 COPY reviewsPhotos
-FROM '/home/cory/Github/SDC/SDC_App_data/reviews_photos.csv'
+FROM '/docker-entrypoint-initdb.d/SDC_App_data/reviews_photos.csv'
 DELIMITER ',' CSV HEADER;
 
 CREATE INDEX ON reviewsPhotos USING hash(review_id);
