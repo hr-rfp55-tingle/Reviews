@@ -5,7 +5,8 @@
   "main": "server/index.js",
   "scripts": {
     "test": "jest",
-    "start": "nodemon server/index.js",
+    "start:dev": "nodemon server/index.js",
+    "start": "node server/index.js",
     "seed": "sudo -u postgres psql < scripts/seed.sql",
     "k6": "k6 run server/k6.js"
   },

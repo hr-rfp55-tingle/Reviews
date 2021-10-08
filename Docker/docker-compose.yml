@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  server:
+    image: Dockerfile
+    restart: unless-stopped
+    expose:
+      - 3000
+    volumes:
+      - /home/cora/SDC:/src/app
